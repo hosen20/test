@@ -2,7 +2,6 @@ import streamlit as st
 from supabase import create_client
 
 url = "https://hwxfcsyvvrogbhmtszih.supabase.co"
-key = "sb_secret_xv9oY0irqBVqF2Skpy4Szw_gKpBc-vs"
 supabase = create_client(url, key)
 
 st.title("Salary Prediction Dashboard")

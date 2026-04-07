@@ -9,22 +9,28 @@ supabase = create_client(url, key)
 st.title("💼 Salary Prediction Dashboard")
 
 # --- Fetch data ---
-response = supabase.table("predictions").select("*").execute()
+response = supabase.table("predictions").select("*").order("created_at", desc=True).execute()
 data = response.data or []
+
+# Base Supabase storage URL (OPTION 1 FIX)
+BASE_STORAGE_URL = f"{url}/storage/v1/object/public/charts"
 
 if not data:
     st.warning("No predictions found in Supabase yet.")
 else:
-    # Safe extraction of job titles
+    # --- Safe extraction of job titles ---
     job_titles = list({
         row.get("inputs", {}).get("job_title")
         for row in data
         if row.get("inputs", {}).get("job_title")
     })
 
-    selected_job = st.sidebar.selectbox("Filter by Job Title", ["All"] + job_titles)
+    selected_job = st.sidebar.selectbox(
+        "Filter by Job Title",
+        ["All"] + sorted(job_titles)
+    )
 
-    # Display records
+    # --- Display records ---
     for row in data:
         inputs = row.get("inputs", {})
 
@@ -39,8 +45,15 @@ else:
         st.write(f"💰 **Predicted Salary:** ${row.get('predicted_salary', 'N/A')}")
         st.write(row.get("narrative", "No narrative available."))
 
+        # --- FIXED IMAGE HANDLING (Option 1) ---
         if row.get("chart_url"):
-            st.image(row["chart_url"], caption="Salary Landscape Chart")
+            # extract filename from stored value
+            file_name = row["chart_url"].split("/")[-1]
+
+            # rebuild full public URL
+            public_url = f"{BASE_STORAGE_URL}/{file_name}"
+
+            st.image(public_url, caption="Salary Landscape Chart", use_container_width=True)
         else:
             st.info("No chart available for this record.")
 

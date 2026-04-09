@@ -1,6 +1,7 @@
 import streamlit as st
 from supabase import create_client
 import pandas as pd
+import altair as alt
 
 # --- Page Config ---
 st.set_page_config(page_title="Job Dashboard", layout="wide")

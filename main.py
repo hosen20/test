@@ -52,8 +52,9 @@ else:
 
         st.markdown("## 📊 Choosing Between Three Offers")
         
-        
         st.image(f"{url}/storage/v1/object/public/charts/ChoosingBetweenOffers.png")
+        
+        st.markdown("## 🗺 Countries With Remote Opportunities")
         
         st.image(f"{url}/storage/v1/object/public/charts/RemoteJobsWorldWideMap.png")
 

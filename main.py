@@ -54,13 +54,13 @@ else:
         st.markdown("## 📊 Choosing Between Three Offers")
         
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.image(f"{url}/storage/v1/object/public/charts/ChoosingBetweenOffers.png")
+        st.image(f"{url}/storage/v1/object/public/charts/1.ChoosingBetweenOffers.png")
         st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown("## 🗺 Countries With Remote Opportunities")
         
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.image(f"{url}/storage/v1/object/public/charts/RemoteJobsWorldWideMap.png")
+        st.image(f"{url}/storage/v1/object/public/charts/2.emoteJobsWorldWideMap.png")
         st.markdown('</div>', unsafe_allow_html=True)
 
         # -----------------------------

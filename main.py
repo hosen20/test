@@ -123,17 +123,6 @@ else:
             "Salary_predicted": predicted_salaries
         })
 
-        # Streamlit card wrapper
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.bar_chart(df.set_index("Offer"))  # compares Score A vs Score B side by side
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        df = pd.DataFrame({
-            "Offer": ["Data Scientist", "ML Scientist", "ML Engineer"],
-            "Salary offered": offered_salaries,
-            "Salary_predicted": predicted_salaries
-        })
-
         # Convert to long format for grouped bars
         df_long = df.melt(
             id_vars="Offer",

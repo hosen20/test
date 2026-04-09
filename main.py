@@ -21,40 +21,37 @@ else:
         st.markdown("## 📊 New Analysis")
 
         # -----------------------------
-        # 🎯 OFFERS SECTION
+        # 🎯 OFFERS SECTION (FIXED)
         # -----------------------------
         st.markdown("### 🧾 Job Offers")
 
-        offers = row.get("offers", [])
+        offers = row.get("offers", {})
 
-        if offers:
-            offer_labels = []
-            offer_map = {}
-
-            for i, offer in enumerate(offers):
-                # Create readable label
-                if isinstance(offer, dict):
-                    label = offer.get("job_title", f"Offer {i+1}")
+        if isinstance(offers, dict) and offers:
+            # Create user-friendly labels
+            offer_labels = {}
+            for key, val in offers.items():
+                if isinstance(val, dict):
+                    label = f"{key} - {val.get('job_title', 'Unknown')}"
                 else:
-                    label = f"Offer {i+1}"
-
-                offer_labels.append(label)
-                offer_map[label] = offer
+                    label = key
+                offer_labels[label] = key
 
             selected_label = st.selectbox(
                 "Select an Offer",
-                options=offer_labels,
+                options=list(offer_labels.keys()),
                 key=f"offer_{row['id']}"
             )
 
-            selected_offer = offer_map[selected_label]
+            selected_key = offer_labels[selected_label]
+            selected_offer = offers[selected_key]
 
             # --- Display full offer details ---
             st.markdown("#### 📄 Offer Details")
 
             if isinstance(selected_offer, dict):
-                for key, value in selected_offer.items():
-                    st.write(f"**{key.replace('_', ' ').title()}**: {value}")
+                for k, v in selected_offer.items():
+                    st.write(f"**{k.replace('_', ' ').title()}**: {v}")
             else:
                 st.write(selected_offer)
 
@@ -95,7 +92,6 @@ else:
 
         if scores:
             try:
-                # convert to float if needed
                 scores = [float(s) for s in scores]
 
                 df = pd.DataFrame({

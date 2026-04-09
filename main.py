@@ -64,6 +64,7 @@ else:
         st.markdown("### 🧾 Job Offers")
 
         offers = row.get("offers", {})
+        offered_salaries = []
 
         if isinstance(offers, dict) and offers:
             offer_labels = {}
@@ -73,6 +74,7 @@ else:
                 else:
                     label = key
                 offer_labels[label] = key
+                offered_salaries.append(offers[key]["salary_in_usd"])
 
             selected_label = st.selectbox(
                 "Select an Offer",
@@ -108,6 +110,23 @@ else:
 
         else:
             st.info("No offers available.")
+        
+        st.markdown("## 📊 Predicted vs Offered Salaries")
+        
+        predicted_salaries = row.get("predicted_salaries", [])
+        predicted_salaries = [float(s) for s in predicted_salaries]
+
+        df = pd.DataFrame({
+            "Offer": ["Data Scientist", "ML Scientist", "ML Engineer"],
+            "Salary offered": offered_salaries,
+            "Salary_predicted": predicted_salaries
+        })
+
+        # Streamlit card wrapper
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.bar_chart(df.set_index("Offer"))  # compares Score A vs Score B side by side
+        st.markdown('</div>', unsafe_allow_html=True)
+
 
         # -----------------------------
         # 💡 EXPLANATIONS SECTION

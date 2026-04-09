@@ -39,7 +39,7 @@ key = st.secrets["SUPABASE_ANON_KEY"]
 supabase = create_client(url, key)
 
 # --- App Title ---
-st.title("🤔 Job Search Confusion Dashboard")
+st.title("🤔 Choosing the Right Job Offer")
 
 # --- Fetch data ---
 response = supabase.table("analysis").select("*").execute()
@@ -50,7 +50,29 @@ if not data:
 else:
     for row in data:
 
-        st.markdown("## 📊 Analysis Report")
+        st.markdown("## 📊 Choosing Between Three Offers")
+        
+        # --- Fetch images from bucket ---
+        def get_image(bucket, path):
+            res = supabase.storage.from_(bucket).download(path)
+            return Image.open(BytesIO(res))
+
+        # --- Load your two images ---
+        img1 = get_image("hwxfcsyvvrogbhmtszih", "charts/ChoosingBetweenOffers.png")
+        img2 = get_image("hwxfcsyvvrogbhmtszih", "charts/RemoteJobsWorldWideMap.png")
+
+        # --- Plot them vertically ---
+        fig, axes = plt.subplots(2, 1, figsize=(10, 12))
+        axes[0].imshow(img1)
+        axes[0].axis("off")
+        axes[0].set_title("Global Opportunity Overview")
+
+        axes[1].imshow(img2)
+        axes[1].axis("off")
+        axes[1].set_title("Remote Job Opportunities in Dataset")
+
+        plt.tight_layout()
+        plt.show()
 
         # -----------------------------
         # 🎯 OFFERS SECTION

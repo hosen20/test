@@ -60,7 +60,7 @@ else:
         st.markdown("## 🗺 Countries With Remote Opportunities")
         
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.image(f"{url}/storage/v1/object/public/charts/2.emoteJobsWorldWideMap.png")
+        st.image(f"{url}/storage/v1/object/public/charts/2.RemoteJobsWorldWideMap.png")
         st.markdown('</div>', unsafe_allow_html=True)
 
         # -----------------------------

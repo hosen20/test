@@ -16,10 +16,9 @@ st.markdown("""
     padding-top: 2rem;
 }
 .image {
-  display: block;        /* ensures it behaves like a block element */
-  margin: 20px auto;     /* auto centers horizontally, 20px top/bottom margin */
-  padding: 10px;         /* adds space inside the element */
-  max-width: 80%;        /* optional: keeps it responsive */
+  display: block;        /* makes the image a block element */
+  margin: 0 auto;        /* auto left/right margin centers it */
+  padding: 10px;         /* inner spacing */
 }
 .card {
     background-color: white;

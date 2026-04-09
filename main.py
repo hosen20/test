@@ -28,12 +28,36 @@ else:
         offers = row.get("offers", [])
 
         if offers:
-            selected_offer = st.selectbox(
+            offer_labels = []
+            offer_map = {}
+
+            for i, offer in enumerate(offers):
+                # Create readable label
+                if isinstance(offer, dict):
+                    label = offer.get("job_title", f"Offer {i+1}")
+                else:
+                    label = f"Offer {i+1}"
+
+                offer_labels.append(label)
+                offer_map[label] = offer
+
+            selected_label = st.selectbox(
                 "Select an Offer",
-                options=offers,
+                options=offer_labels,
                 key=f"offer_{row['id']}"
             )
-            st.write(selected_offer)
+
+            selected_offer = offer_map[selected_label]
+
+            # --- Display full offer details ---
+            st.markdown("#### 📄 Offer Details")
+
+            if isinstance(selected_offer, dict):
+                for key, value in selected_offer.items():
+                    st.write(f"**{key.replace('_', ' ').title()}**: {value}")
+            else:
+                st.write(selected_offer)
+
         else:
             st.info("No offers available.")
 
@@ -71,7 +95,7 @@ else:
 
         if scores:
             try:
-                # convert to numeric if stored as strings
+                # convert to float if needed
                 scores = [float(s) for s in scores]
 
                 df = pd.DataFrame({

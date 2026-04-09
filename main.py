@@ -150,7 +150,7 @@ else:
                 scores = [float(s) for s in scores]
 
                 df = pd.DataFrame({
-                    "Offer": [f"Offer {i+1}" for i in range(len(scores))],
+                    "Offer": [f"Offer {}" for job_title in ["Data Scientist", "Machine Learning Scientist", "Machine Learning Engineer"]],
                     "Score": scores
                 })
 

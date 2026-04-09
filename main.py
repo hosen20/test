@@ -15,14 +15,6 @@ st.markdown("""
 .block-container {
     padding-top: 2rem;
 }
-.image {
-  display: block;        /* makes it a block element */
-  margin-left: auto;     /* centers horizontally */
-  margin-right: auto;    /* centers horizontally */
-  margin-top: 0;         /* no space above */
-  margin-bottom: 0;      /* no space below */
-  padding: 10px;         /* small inner spacing */
-}
 .card {
     background-color: white;
     padding: 20px;
@@ -61,18 +53,14 @@ else:
 
         st.markdown("## 📊 Choosing Between Three Offers")
         
-        st.markdown('<div class="image">', unsafe_allow_html=True)
-        
+        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.image(f"{url}/storage/v1/object/public/charts/ChoosingBetweenOffers.png")
-        
         st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown("## 🗺 Countries With Remote Opportunities")
         
-        st.markdown('<div class="image">', unsafe_allow_html=True)
-        
+        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.image(f"{url}/storage/v1/object/public/charts/RemoteJobsWorldWideMap.png")
-        
         st.markdown('</div>', unsafe_allow_html=True)
 
         # -----------------------------

@@ -127,6 +127,38 @@ else:
         st.bar_chart(df.set_index("Offer"))  # compares Score A vs Score B side by side
         st.markdown('</div>', unsafe_allow_html=True)
 
+        df = pd.DataFrame({
+            "Offer": ["Data Scientist", "ML Scientist", "ML Engineer"],
+            "Salary offered": offered_salaries,
+            "Salary_predicted": predicted_salaries
+        })
+
+        # Convert to long format for grouped bars
+        df_long = df.melt(
+            id_vars="Offer",
+            var_name="Type",
+            value_name="Salary"
+        )
+
+        # Streamlit card wrapper
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+
+        chart = (
+            alt.Chart(df_long)
+            .mark_bar()
+            .encode(
+                x=alt.X("Offer:N", title="Offer"),
+                xOffset="Type:N",   # <-- this makes bars sit side-by-side
+                y=alt.Y("Salary:Q", title="Salary"),
+            color="Type:N"
+            )
+        .properties(width=600)
+        )
+
+        st.altair_chart(chart, use_container_width=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
 
         # -----------------------------
         # 💡 EXPLANATIONS SECTION

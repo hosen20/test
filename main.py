@@ -1,60 +1,88 @@
 import streamlit as st
 from supabase import create_client
+import pandas as pd
 
-# --- Secure Supabase setup ---
+# --- Supabase setup ---
 url = st.secrets["SUPABASE_URL"]
 key = st.secrets["SUPABASE_ANON_KEY"]
 supabase = create_client(url, key)
 
-st.title("💼 Salary Prediction Dashboard")
+# --- App Title ---
+st.title("🤔 Job Search Confusion Dashboard")
 
 # --- Fetch data ---
-response = supabase.table("predictions").select("*").order("created_at", desc=True).execute()
+response = supabase.table("analysis").select("*").execute()
 data = response.data or []
 
-# Base Supabase storage URL (OPTION 1 FIX)
-BASE_STORAGE_URL = f"{url}/storage/v1/object/public/charts"
-
 if not data:
-    st.warning("No predictions found in Supabase yet.")
+    st.warning("No analysis records found.")
 else:
-    # --- Safe extraction of job titles ---
-    job_titles = list({
-        row.get("inputs", {}).get("job_title")
-        for row in data
-        if row.get("inputs", {}).get("job_title")
-    })
-
-    selected_job = st.sidebar.selectbox(
-        "Filter by Job Title",
-        ["All"] + sorted(job_titles)
-    )
-
-    # --- Display records ---
     for row in data:
-        inputs = row.get("inputs", {})
+        st.markdown("## 📊 New Analysis")
 
-        if selected_job != "All" and inputs.get("job_title") != selected_job:
-            continue
+        # -----------------------------
+        # 🎯 OFFERS SECTION
+        # -----------------------------
+        st.markdown("### 🧾 Job Offers")
 
-        st.subheader(f"Job: {inputs.get('job_title', 'Unknown')}")
-        st.write(f"Experience: {inputs.get('experience_level', 'N/A')}")
-        st.write(f"Employment Type: {inputs.get('employment_type', 'N/A')}")
-        st.write(f"Company Size: {inputs.get('company_size', 'N/A')}")
+        offers = row.get("offers", [])
 
-        st.write(f"💰 **Predicted Salary:** ${row.get('predicted_salary', 'N/A')}")
-        st.write(row.get("narrative", "No narrative available."))
-
-        # --- FIXED IMAGE HANDLING (Option 1) ---
-        if row.get("chart_url"):
-            # extract filename from stored value
-            file_name = row["chart_url"].split("/")[-1]
-
-            # rebuild full public URL
-            public_url = f"{BASE_STORAGE_URL}/{file_name}"
-
-            st.image(public_url, caption="Salary Landscape Chart", use_container_width=True)
+        if offers:
+            selected_offer = st.selectbox(
+                "Select an Offer",
+                options=offers,
+                key=f"offer_{row['id']}"
+            )
+            st.write(selected_offer)
         else:
-            st.info("No chart available for this record.")
+            st.info("No offers available.")
+
+        # -----------------------------
+        # 💡 EXPLANATIONS SECTION
+        # -----------------------------
+        st.markdown("### 💡 Offer Explanations")
+
+        explanations = [
+            row.get("offer1_explanation"),
+            row.get("offer2_explanation"),
+            row.get("offer3_explanation"),
+        ]
+
+        explanations = [e for e in explanations if e]
+
+        if explanations:
+            index = st.slider(
+                "Slide through explanations",
+                0,
+                len(explanations) - 1,
+                0,
+                key=f"slider_{row['id']}"
+            )
+            st.write(explanations[index])
+        else:
+            st.info("No explanations available.")
+
+        # -----------------------------
+        # 📈 SCORES SECTION
+        # -----------------------------
+        st.markdown("### 📈 Scores Comparison")
+
+        scores = row.get("scores", [])
+
+        if scores:
+            try:
+                # convert to numeric if stored as strings
+                scores = [float(s) for s in scores]
+
+                df = pd.DataFrame({
+                    "Offer": [f"Offer {i+1}" for i in range(len(scores))],
+                    "Score": scores
+                })
+
+                st.bar_chart(df.set_index("Offer"))
+            except:
+                st.warning("Scores format is invalid.")
+        else:
+            st.info("No scores available.")
 
         st.markdown("---")

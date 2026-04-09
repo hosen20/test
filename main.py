@@ -52,7 +52,10 @@ else:
 
         st.markdown("## 📊 Choosing Between Three Offers")
         
+        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.image(f"{url}/storage/v1/object/public/charts/ChoosingBetweenOffers.png", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        
         st.image(f"{url}/storage/v1/object/public/charts/RemoteJobsWorldWideMap.png", use_container_width=True)
 
         # -----------------------------

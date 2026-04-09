@@ -52,27 +52,8 @@ else:
 
         st.markdown("## 📊 Choosing Between Three Offers")
         
-        # --- Fetch images from bucket ---
-        def get_image(bucket, path):
-            res = supabase.storage.from_(bucket).download(path)
-            return Image.open(BytesIO(res))
-
-        # --- Load your two images ---
-        img1 = get_image("hwxfcsyvvrogbhmtszih", "charts/ChoosingBetweenOffers.png")
-        img2 = get_image("hwxfcsyvvrogbhmtszih", "charts/RemoteJobsWorldWideMap.png")
-
-        # --- Plot them vertically ---
-        fig, axes = plt.subplots(2, 1, figsize=(10, 12))
-        axes[0].imshow(img1)
-        axes[0].axis("off")
-        axes[0].set_title("Global Opportunity Overview")
-
-        axes[1].imshow(img2)
-        axes[1].axis("off")
-        axes[1].set_title("Remote Job Opportunities in Dataset")
-
-        plt.tight_layout()
-        plt.show()
+        st.image(f"{url}/storage/v1/object/public/charts/ChoosingBetweenOffers.png")
+        st.image(f"{url}/storage/v1/object/public/charts/RemoteJobsWorldWideMap.png")
 
         # -----------------------------
         # 🎯 OFFERS SECTION

@@ -182,7 +182,7 @@ else:
         # -----------------------------
         # 📈 SCORES SECTION
         # -----------------------------
-        st.markdown("### 📈 Offer Scores")
+        st.markdown("### 📈 Offers Scores")
 
         scores = row.get("scores", [])
 

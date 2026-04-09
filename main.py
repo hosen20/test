@@ -52,8 +52,8 @@ else:
 
         st.markdown("## 📊 Choosing Between Three Offers")
         
-        st.image(f"{url}/storage/v1/object/public/charts/ChoosingBetweenOffers.png")
-        st.image(f"{url}/storage/v1/object/public/charts/RemoteJobsWorldWideMap.png")
+        st.image(f"{url}/storage/v1/object/public/charts/ChoosingBetweenOffers.png", use_container_width=True)
+        st.image(f"{url}/storage/v1/object/public/charts/RemoteJobsWorldWideMap.png", use_container_width=True)
 
         # -----------------------------
         # 🎯 OFFERS SECTION
